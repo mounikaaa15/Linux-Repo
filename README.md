@@ -317,3 +317,163 @@ Always ask:
 ## 🚀 Key Takeaway
 
 Linux is not about commands — it is about understanding system behavior and debugging efficiently.
+# 🧠 Linux Signals (Process Communication & Control)
+
+---
+
+## 📌 What are Signals?
+
+Signals are **notifications sent to a process** to tell it to do something.
+
+👉 Example:
+
+* Stop
+* Restart
+* Terminate
+
+---
+
+## 🧠 Simple Understanding (Kid Version)
+
+👉 Process = worker
+👉 Signal = message to worker
+
+Examples:
+
+* “Stop working” → terminate
+* “Pause” → stop
+* “Wake up” → continue
+
+---
+
+## ⚙️ Common Signals (IMPORTANT)
+
+| Signal | Name    | Meaning                 |
+| ------ | ------- | ----------------------- |
+| 15     | SIGTERM | Graceful stop (default) |
+| 9      | SIGKILL | Force stop              |
+| 2      | SIGINT  | Interrupt (Ctrl + C)    |
+| 1      | SIGHUP  | Restart / reload        |
+
+---
+
+## 🔹 SIGTERM vs SIGKILL (VERY IMPORTANT)
+
+### 🔸 SIGTERM (kill <PID>)
+
+👉 Graceful shutdown
+
+* App gets time to clean up
+* Closes files properly
+
+```bash
+kill <PID>
+```
+
+---
+
+### 🔸 SIGKILL (kill -9 <PID>)
+
+👉 Force kill
+
+* Immediate stop
+* No cleanup
+
+```bash
+kill -9 <PID>
+```
+
+---
+
+## 🎯 Interview Answer (Golden Line)
+
+> SIGTERM allows graceful termination, while SIGKILL forcefully stops the process without cleanup.
+
+---
+
+## 🔧 Practical Examples
+
+---
+
+### 🔹 Stop a process gracefully
+
+```bash
+ps aux | grep node
+kill <PID>
+```
+
+---
+
+### 🔹 Force stop a stuck process
+
+```bash
+kill -9 <PID>
+```
+
+---
+
+### 🔹 Stop using Ctrl + C
+
+```bash
+Ctrl + C
+```
+
+---
+
+## 🔥 Real DevOps Scenarios
+
+---
+
+### ❌ App not stopping
+
+👉 Problem:
+
+* Process ignoring SIGTERM
+
+👉 Fix:
+
+```bash
+kill -9 <PID>
+```
+
+---
+
+### ❌ Deployment restart
+
+👉 What happens:
+
+* Old process gets SIGTERM
+* New process starts
+
+---
+
+### ❌ Zombie / stuck process
+
+👉 Fix:
+
+```bash
+kill -9 <PID>
+```
+
+---
+
+## 🧠 Signal Flow (Understanding Internally)
+
+```text
+User → kill command → Kernel → Signal → Process
+```
+
+---
+
+## 🚀 Key Takeaway
+
+Signals are used to **control process behavior** like stopping, restarting, or killing processes.
+
+---
+
+## 🎯 DevOps Thinking
+
+Always choose:
+
+* SIGTERM → safe shutdown ✅
+* SIGKILL → last option ⚠️
